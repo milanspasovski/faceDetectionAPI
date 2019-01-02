@@ -32,9 +32,13 @@ app.get('/', (req, res) => {
 	res.send(database.users);
 })  
 
-app.post('/signin', (req, res) => {
-	if(req.body.email === database.users[0].email && 
-		req.body.password === database.users[0].password) {
+app.post('/signin', (req, res) => { 
+	const { email, password } = req.body;  
+	if(!email || !password){
+		res.status(400).json('empty fields!');
+	}
+	if(email === database.users[0].email && 
+		password === database.users[0].password) {
 			res.json(database.users[0]);
 	} else{
 		res.status(400).json('error logging in');
@@ -43,6 +47,9 @@ app.post('/signin', (req, res) => {
 
 app.post('/register', (req, res) => {
 	const { email, name, password } = req.body; 
+	if(!email || !name || !password){
+		res.status(400).json('empty fields!');
+	}
 	database.users.push({
 		id: '125',
 		name: name, 
